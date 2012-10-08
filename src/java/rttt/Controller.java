@@ -1,10 +1,9 @@
 package rttt;
 
 
+import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
-
-import test.Vector2D;
 
 import yarangi.graphics.quadraturin.Camera2D;
 import yarangi.graphics.quadraturin.Scene;
@@ -17,8 +16,10 @@ import yarangi.graphics.quadraturin.debug.Debug;
 import yarangi.graphics.quadraturin.events.UserActionEvent;
 import yarangi.graphics.quadraturin.objects.IEntity;
 import yarangi.graphics.quadraturin.objects.ILayerObject;
+import yarangi.math.Vector2D;
 import yarangi.math.IVector2D;
 import yarangi.spatial.ISpatialFilter;
+import yarangi.spatial.PickingSensor;
 
 
 public class Controller extends ActionController
@@ -73,14 +74,14 @@ public class Controller extends ActionController
 			@Override
 			public void act(UserActionEvent event)
 			{
-				IVector2D p = event.getCursor().getWorldLocation();
 				
-				if(prevLoc!=null)
+				IVector2D p = Vector2D.R( event.getCursor().getCanvasLocation().getX(),
+										 -event.getCursor().getCanvasLocation().getY() );
+				
+				if(prevLoc!=null && p!=null)
 				{
 					IVector2D q = p.minus(prevLoc);
-					
 					cameraMan.moveRelative(q.x(), q.y());
-					System.out.println(q.x()+" "+ q.y());
 				}
 				
 				prevLoc = p;
@@ -156,6 +157,9 @@ public class Controller extends ActionController
 		return cameraMan;
 	}
 
+	@Override
+	public PickingSensor.Mode getPickingMode() { return PickingSensor.Mode.FITTING; }
+	
 /*	@Override
 	public void display(GL gl, double time, RenderingContext context)
 	{
