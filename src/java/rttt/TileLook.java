@@ -1,6 +1,7 @@
 package rttt;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import yarangi.graphics.quadraturin.IRenderingContext;
 import yarangi.graphics.quadraturin.IVeil;
@@ -17,8 +18,9 @@ public class TileLook implements ILook <Tile>
 	}
 
 	@Override
-	public void render(GL gl, Tile tile, IRenderingContext context)
+	public void render(GL gl1, Tile tile, IRenderingContext context)
 	{
+		GL2 gl = gl1.getGL2();
 		AABB aabb = (AABB)tile.getArea();
 		float minx = (float)aabb.getMinX();
 		float maxx = (float)aabb.getMaxX();
@@ -27,7 +29,7 @@ public class TileLook implements ILook <Tile>
 		
 		gl.glColor3f( 0.0f, 0.5f, 1.0f );
 		if(tile.isHighlighted())
-			gl.glBegin(GL.GL_POLYGON);
+			gl.glBegin(GL2.GL_POLYGON);
 		else
 			gl.glBegin(GL.GL_LINE_STRIP);
 		gl.glVertex2f(minx, miny);

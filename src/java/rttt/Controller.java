@@ -4,6 +4,8 @@ package rttt;
 import java.util.HashMap;
 import java.util.Map;
 
+import test.Vector2D;
+
 import yarangi.graphics.quadraturin.Camera2D;
 import yarangi.graphics.quadraturin.Scene;
 import yarangi.graphics.quadraturin.actions.ActionController;
@@ -15,6 +17,7 @@ import yarangi.graphics.quadraturin.debug.Debug;
 import yarangi.graphics.quadraturin.events.UserActionEvent;
 import yarangi.graphics.quadraturin.objects.IEntity;
 import yarangi.graphics.quadraturin.objects.ILayerObject;
+import yarangi.math.IVector2D;
 import yarangi.spatial.ISpatialFilter;
 
 
@@ -30,6 +33,7 @@ public class Controller extends ActionController
 	
 	private Player currPlayer = X;
 	
+	private IVector2D prevLoc;
 	
 	private static final Player X = new Player(PlayerMark.X);
 	private static final Player O = new Player(PlayerMark.O);
@@ -64,13 +68,32 @@ public class Controller extends ActionController
 		DefaultActionFactory.appendNavActions(scene, this);
 		Debug.appendDebugActions( this.getActions() );
 		
-//		actions.put("cursor-moved", temple.getController());
+		actions.put("mouse-drag", new IAction()
+		{
+			@Override
+			public void act(UserActionEvent event)
+			{
+				IVector2D p = event.getCursor().getWorldLocation();
+				
+				if(prevLoc!=null)
+				{
+					IVector2D q = p.minus(prevLoc);
+					
+					cameraMan.moveRelative(q.x(), q.y());
+					System.out.println(q.x()+" "+ q.y());
+				}
+				
+				prevLoc = p;
+			}
+		});
+		
 		actions.put("mouse-click", new IAction()
 		{
 
 			@Override
 			public void act(UserActionEvent event)
 			{
+				
 				ILayerObject object = event.getCursor().getEntity();
 				if(object == null)
 					return;

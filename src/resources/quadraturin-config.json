@@ -45,6 +45,7 @@
 					{ "actionId" : "zoom-out",      "buttonId" : -3,   "modeId" : 6 },
 					{ "actionId" : "cursor-moved",  "buttonId" : 0,    "modeId" : 0 },
 					{ "actionId" : "mouse-click",    "buttonId" : -1,   "modeId" : 2 },
+					{ "actionId" : "mouse-drag",    "buttonId" : -1,   "modeId" : 4 },
 					{ "actionId" : "show-sensors",   "buttonId" : 113,   "modeId" : 1 },
 					{ "actionId" : "show-coordinates",   "buttonId" : 112,   "modeId" : 1 },
 					{ "actionId" : "show-areas",   "buttonId" : 114,   "modeId" : 1 },
