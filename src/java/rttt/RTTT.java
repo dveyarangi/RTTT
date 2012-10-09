@@ -46,6 +46,7 @@ public class RTTT extends Scene
 //		board.setArea( AABB.createSquare( 0, 0, BOARD_SIZE, 0 ) );
 		
 		board.split( board.getRoot(), 3 );
+		board.merge( board.getRoot(), 3 );
 //		board.split(board.getRoot().getSubTiles()[1][1],  3 );
 //		board.split(board.getRoot().getSubTiles()[0][1],  4 );
 //		board.split(board.getRoot().getSubTiles()[0][1].getSubTiles()[1][1],  3 );

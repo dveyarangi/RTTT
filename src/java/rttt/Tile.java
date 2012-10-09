@@ -42,6 +42,13 @@ public class Tile extends Entity
 		
 		subtiles = new Tile [dim][dim];
 	}
+	
+	public void merge()
+	{
+		claimedBy = null;
+		ownedBy = null;
+		subtiles = null;
+	}
 
 	
 	public Tile [][] getSubTiles() { return subtiles; }

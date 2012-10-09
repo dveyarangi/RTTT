@@ -31,10 +31,22 @@ public class Board extends Entity
 		
 		for(int i = 0; i < dim; i ++) for(int j = 0; j < dim; j ++)
 		{
-			tile.getSubTiles()[i][j] = new Tile( minx + subwidth * i, miny + subheight * j, minx + subwidth * (i+1), miny + subheight * (j+1) );
-
+			tile.getSubTiles()[i][j] = new Tile( minx + subwidth * i, 
+												 miny + subheight * j, 
+												 minx + subwidth * (i+1), 
+												 miny + subheight * (j+1) );
 			scene.addEntity( tile.getSubTiles()[i][j] );
 		}
+	}
+	
+	public void merge(Tile tile, int dim)
+	{
+		for(int i = 0; i < dim; i ++) for(int j = 0; j < dim; j ++)
+		{
+			scene.removeEntity( tile.getSubTiles()[i][j] );
+		}
+		tile.merge();
+		scene.addEntity(tile);
 	}
 	
 	public Tile getRoot() { return root; }
