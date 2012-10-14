@@ -104,7 +104,8 @@ public class Controller extends ActionController
 				
 				currPlayer = getNextPlayer();
 				
-				if(tile.getClaimedBy() == null) {
+				if(tile.getClaimedBy() == null) 
+				{
 					tile.setClaimedBy( currPlayer.getMark() );
 					currPlayer.claim(tile);
 				}
@@ -114,6 +115,7 @@ public class Controller extends ActionController
 				if(getNextPlayer().getClaimed() != null && getNextPlayer().getClaimed() != tile)
 				{
 					getNextPlayer().getClaimed().setOwned();
+					board.checkVictory( getNextPlayer().getClaimed().getParent() );
 				}
 				
 /*				ICursorEvent cursor = event.getCursor();
