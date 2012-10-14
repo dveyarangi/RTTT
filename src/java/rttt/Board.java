@@ -80,6 +80,7 @@ public class Board extends Entity
 				merge( tile );
 				tile.setClaimedBy(p);
 				tile.setOwned();
+				checkVictory(tile.getParent());
 				return;
 			}
 		}
@@ -103,6 +104,7 @@ public class Board extends Entity
 				merge( tile );
 				tile.setClaimedBy(p);
 				tile.setOwned();
+				checkVictory(tile.getParent());
 				return;
 			}
 		}
@@ -126,6 +128,7 @@ public class Board extends Entity
 				merge( tile );
 				tile.setClaimedBy(p);
 				tile.setOwned();
+				checkVictory(tile.getParent());
 				return;
 			}
 		}
@@ -148,6 +151,7 @@ public class Board extends Entity
 				merge( tile );
 				tile.setClaimedBy(p);
 				tile.setOwned();
+				checkVictory(tile.getParent());
 				return;
 			}
 		}
