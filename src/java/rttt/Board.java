@@ -45,11 +45,15 @@ public class Board extends Entity
 	{
 		for(int i=0; i<tile.getDim() ; ++i ) for(int j=0; j<tile.getDim() ; ++j )
 		{
+			if( tile.getSubTiles()[i][j].getSubTiles()!=null )
+				merge(tile.getSubTiles()[i][j]);
+			
 			scene.removeEntity( tile.getSubTiles()[i][j] );
 		}
 		tile.merge();
 		scene.addEntity(tile);
 	}
+	
 	
 	public void checkVictory( Tile tile )
 	{
