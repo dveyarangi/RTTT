@@ -3,20 +3,29 @@ package rttt;
 
 public class Player
 {
-	private final PlayerMark mark;
+	private final IPlayerMark mark;
+	
+	private final IPlayerController controller;
 	
 	private Tile lastClaimed;
 	
-	public Player(PlayerMark mark)  {
+	public Player(IPlayerMark mark, IPlayerController controller)  
+	{
 		this.mark = mark;
+		this.controller = controller;
 	}
 	
 	public void claim(Tile tile) { this.lastClaimed = tile; }
 	
 	public Tile getClaimed() { return lastClaimed; }
 
-	public PlayerMark getMark()
+	public IPlayerMark getMark()
 	{
 		return mark;
+	}
+
+	public IPlayerController getController()
+	{
+		return controller;
 	}
 }

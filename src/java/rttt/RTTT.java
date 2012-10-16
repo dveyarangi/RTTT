@@ -20,6 +20,8 @@ public class RTTT extends Scene
 		Stage stage = Q.go();
 	}
 
+
+
 	public RTTT(SceneConfig sceneConfig, EkranConfig ekranConfig, QVoices voices)
 	{
 		super( sceneConfig, ekranConfig, voices );
@@ -37,8 +39,17 @@ public class RTTT extends Scene
 	public void init()
 	{
 		
-		Board board = new Board(BOARD_SIZE, this);
-		Controller controller = new Controller(this, board);
+		HumanController controller = new HumanController(this);
+		Player [] players = new Player [] {
+				new Player(IPlayerMark.X, controller),
+				new Player(IPlayerMark.O, controller)
+		};
+		
+		Board board = new Board(BOARD_SIZE, this, players);
+		
+		board.setBehavior( new BoardBehavior() );
+		
+		addEntity( board );
 		
 		setActionController( new EntityShell( controller, null, null));
 //		ILook <Board> look = new BoardLook();

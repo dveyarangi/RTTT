@@ -20,7 +20,7 @@ import yarangi.spatial.ISpatialFilter;
 import yarangi.spatial.PickingSensor;
 
 
-public class Controller extends ActionController
+public class HumanController extends ActionController implements IPlayerController
 {
 	Map <String, IAction> actions = new HashMap <String, IAction> ();
 	
@@ -28,18 +28,10 @@ public class Controller extends ActionController
 	
 	private final boolean isDrawing = false;
 	
-	private final Board board;
-	
-	private Player currPlayer = X;
-	
 	private IVector2D prevLoc;
 	
-	private static final Player X = new Player(PlayerMark.X);
-	private static final Player O = new Player(PlayerMark.O);
-	
-	public Player getNextPlayer() {
-		return currPlayer == X ? O : X;
-	}
+	private TileCoord move;
+
 	
 	private final ISpatialFilter <IEntity> filter = new ISpatialFilter <IEntity> ()
 	{
@@ -56,12 +48,10 @@ public class Controller extends ActionController
 	};
 
 	
-	public Controller(final Scene scene, final Board board)
+	public HumanController(final Scene scene)
 	{
 		super(scene);
-		
-		this.board = board;
-	
+
 		cameraMan = new CameraMover( (Camera2D) scene.getCamera() );
 		
 		DefaultActionFactory.appendNavActions(scene, this);
@@ -92,53 +82,24 @@ public class Controller extends ActionController
 			@Override
 			public void act(UserActionEvent event)
 			{
-				
 				ILayerObject object = event.getCursor().getEntity();
 				if(object == null)
 					return;
 				
 				Tile tile = (Tile) object;
 				
-				if(tile.getOwner() != null) // already has piece
-					return;
-				
-				currPlayer = getNextPlayer();
-				
-				if(tile.getClaimedBy() == null) 
-				{
-					tile.setClaimedBy( currPlayer.getMark() );
-					currPlayer.claim(tile);
-				}
-				else 
-					board.split( tile,  3 );
-				
-				if(getNextPlayer().getClaimed() != null && getNextPlayer().getClaimed() != tile)
-				{
-					getNextPlayer().getClaimed().setOwned();
-					board.checkVictory( getNextPlayer().getClaimed().getParent() );
-				}
-				
-/*				ICursorEvent cursor = event.getCursor();
-				target = cursor.getWorldLocation();
-				// TODO: test olnly 
-				
-//				reinforcementMap.query(new ConsumingSensor(terrain, false,target.x(), target.y(), 10  ), target.x(), target.y(), 10 );
-				
-				if(dragged != null)
-					return;
-				if(cursor.getEntity() != null && (cursor.getEntity() instanceof IEntity) )
-				{
-					dragged = (IEntity)cursor.getEntity();
-					target = cursor.getWorldLocation();
-				}
-				if(dragged == null) {
-//					System.out.println(target);
-					drawTerrain(terrain, target, false);
-				}*/
+				move = tile.getCoord();
 			}
 			
 		});
 
+	}
+	
+	@Override
+	public TileCoord getMove() {
+		TileCoord tempMove = move;
+		move = null;
+		return tempMove;
 	}
 	
 	
@@ -177,5 +138,7 @@ public class Controller extends ActionController
 			tile.setHighlighted(true);
 		}
 	}
+
+
 
 }
