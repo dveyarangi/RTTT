@@ -28,8 +28,6 @@ public class HumanController extends ActionController implements IPlayerControll
 	
 	private final ICameraMan cameraMan;
 	
-	private final boolean isDrawing = false;
-	
 	private IVector2D prevLoc;
 	
 	private TileCoord move;

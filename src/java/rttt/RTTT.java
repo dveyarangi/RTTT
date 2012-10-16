@@ -4,13 +4,9 @@ import yarangi.graphics.quadraturin.Q;
 import yarangi.graphics.quadraturin.QVoices;
 import yarangi.graphics.quadraturin.Scene;
 import yarangi.graphics.quadraturin.Stage;
-import yarangi.graphics.quadraturin.actions.DefaultActionFactory;
 import yarangi.graphics.quadraturin.config.EkranConfig;
 import yarangi.graphics.quadraturin.config.SceneConfig;
-import yarangi.graphics.quadraturin.debug.Debug;
 import yarangi.graphics.quadraturin.objects.EntityShell;
-import yarangi.graphics.quadraturin.objects.ILook;
-import yarangi.spatial.AABB;
 
 public class RTTT extends Scene
 {
