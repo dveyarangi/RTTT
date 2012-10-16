@@ -17,6 +17,8 @@ public class RTTT extends Scene
 
 	public static void main(String ... args)
 	{
+		
+		// starts the engine:
 		Stage stage = Q.go();
 	}
 
@@ -26,10 +28,6 @@ public class RTTT extends Scene
 	{
 		super( sceneConfig, ekranConfig, voices );
 		
-		
-		
-		
-		// TODO Auto-generated constructor stub
 	}
 	
 	private static final int BOARD_SIZE = 300;
@@ -38,41 +36,31 @@ public class RTTT extends Scene
 	@Override
 	public void init()
 	{
-		
+		// shared controller for user interactions:
 		HumanController controller = new HumanController(this);
+		
+		// registering user input controller with engine:
+		setActionController( new EntityShell( controller, null, null));
+		
+		// list of participating players:
 		Player [] players = new Player [] {
 				new Player(IPlayerMark.X, controller),
 				new Player(IPlayerMark.O, controller)
 		};
 		
+		// game board:
 		Board board = new Board(BOARD_SIZE, this, players);
 		
+		// constantly samples moves from controllers and tries to advance game:
 		board.setBehavior( new BoardBehavior() );
 		
-		addEntity( board );
-		
-		setActionController( new EntityShell( controller, null, null));
-//		ILook <Board> look = new BoardLook();
-//		board.setLook( look );
-//		board.setArea( AABB.createSquare( 0, 0, BOARD_SIZE, 0 ) );
-		
+		// preparing game board
 		board.split( board.getRoot(), 3 );
-//		board.split(board.getRoot().getSubTiles()[1][1],  3 );
-//		board.split(board.getRoot().getSubTiles()[0][1],  4 );
-//		board.split(board.getRoot().getSubTiles()[0][1].getSubTiles()[1][1],  3 );
 
-		
-//		addEntity( board );
+		addEntity( board ); // registering with engine, so behavior is invoked
 	}
 
 	@Override
-	public void destroy()
-	{
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
-	
+	public void destroy() { }
 
 }

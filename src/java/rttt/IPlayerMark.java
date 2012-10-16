@@ -9,6 +9,9 @@ import yarangi.graphics.quadraturin.objects.ILook;
 import yarangi.math.Angles;
 import yarangi.spatial.AABB;
 
+/**
+ * Player's pieces visual representation
+ */
 public interface IPlayerMark extends ILook <Tile>
 {
 	

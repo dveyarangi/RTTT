@@ -19,7 +19,9 @@ import yarangi.math.IVector2D;
 import yarangi.spatial.ISpatialFilter;
 import yarangi.spatial.PickingSensor;
 
-
+/**
+ * Implements user player control.
+ */
 public class HumanController extends ActionController implements IPlayerController
 {
 	Map <String, IAction> actions = new HashMap <String, IAction> ();
@@ -53,8 +55,10 @@ public class HumanController extends ActionController implements IPlayerControll
 		super(scene);
 
 		cameraMan = new CameraMover( (Camera2D) scene.getCamera() );
-		
+		// default key actions:
 		DefaultActionFactory.appendNavActions(scene, this);
+		
+		// some debug actions:
 		Debug.appendDebugActions( this.getActions() );
 		
 		actions.put("mouse-drag", new IAction()
@@ -62,7 +66,8 @@ public class HumanController extends ActionController implements IPlayerControll
 			@Override
 			public void act(UserActionEvent event)
 			{
-				
+				if(event.getCursor().getCanvasLocation() == null)
+					return; 
 				IVector2D p = Vector2D.R( event.getCursor().getCanvasLocation().getX(),
 										 -event.getCursor().getCanvasLocation().getY() );
 				
@@ -76,6 +81,7 @@ public class HumanController extends ActionController implements IPlayerControll
 			}
 		});
 		
+		// player move action:
 		actions.put("mouse-click", new IAction()
 		{
 
@@ -102,6 +108,21 @@ public class HumanController extends ActionController implements IPlayerControll
 		return tempMove;
 	}
 	
+	@Override
+	public void hover(ILayerObject prevEntity, ILayerObject pickedEntity)
+	{
+		if(prevEntity != null) {
+			Tile tile = (Tile) prevEntity;
+			tile.setHighlighted(false);
+		}
+		if(pickedEntity != null) {
+			Tile tile = (Tile) pickedEntity;
+			tile.setHighlighted(true);
+		}
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	// engine service methods
 	
 	@Override
 	public Map<String, IAction> getActions()
@@ -120,25 +141,5 @@ public class HumanController extends ActionController implements IPlayerControll
 
 	@Override
 	public PickingSensor.Mode getPickingMode() { return PickingSensor.Mode.FITTING; }
-	
-/*	@Override
-	public void display(GL gl, double time, RenderingContext context)
-	{
-		look.render( gl, time, this, context );
-	}*/
-	@Override
-	public void hover(ILayerObject prevEntity, ILayerObject pickedEntity)
-	{
-		if(prevEntity != null) {
-			Tile tile = (Tile) prevEntity;
-			tile.setHighlighted(false);
-		}
-		if(pickedEntity != null) {
-			Tile tile = (Tile) pickedEntity;
-			tile.setHighlighted(true);
-		}
-	}
-
-
 
 }

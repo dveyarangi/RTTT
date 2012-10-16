@@ -6,9 +6,11 @@ import javax.media.opengl.GL2;
 import yarangi.graphics.quadraturin.IRenderingContext;
 import yarangi.graphics.quadraturin.IVeil;
 import yarangi.graphics.quadraturin.objects.ILook;
-import yarangi.math.Angles;
 import yarangi.spatial.AABB;
 
+/**
+ * visual aspect of game board tile
+ */
 public class TileLook implements ILook <Tile>
 {
 
@@ -22,23 +24,35 @@ public class TileLook implements ILook <Tile>
 	{
 		GL2 gl = gl1.getGL2();
 		AABB aabb = (AABB)tile.getArea();
+		
 		float minx = (float)aabb.getMinX();
 		float maxx = (float)aabb.getMaxX();
 		float miny = (float)aabb.getMinY();
-		float maxy = (float)aabb.getMaxY();
 		
-		gl.glColor3f( 0.0f, 0.5f, 1.0f );
-		if(tile.isHighlighted())
-			gl.glBegin(GL2.GL_POLYGON);
-		else
-			gl.glBegin(GL.GL_LINE_STRIP);
-		gl.glVertex2f(minx, miny);
-		gl.glVertex2f(minx, maxy);
-		gl.glVertex2f(maxx, maxy);
-		gl.glVertex2f(maxx, miny);
-		gl.glVertex2f(minx, miny);
+		float maxy = (float)aabb.getMaxY();
+		// basic tile rectangle:
+		gl.glColor3f( 0.0f, 0.5f, 1f );
+		gl.glBegin(GL.GL_LINE_STRIP);
+			gl.glVertex2f(minx, miny);
+			gl.glVertex2f(minx, maxy);
+			gl.glVertex2f(maxx, maxy);
+			gl.glVertex2f(maxx, miny);
+			gl.glVertex2f(minx, miny);
 		gl.glEnd();
 		
+		// hightlighted by mouse cursor
+		if(tile.isHighlighted()) {
+			gl.glColor3f( 0.0f, 0.5f, 0.3f );
+			gl.glBegin(GL2.GL_POLYGON);
+				gl.glVertex2f(minx, miny);
+				gl.glVertex2f(minx, maxy);
+				gl.glVertex2f(maxx, maxy);
+				gl.glVertex2f(maxx, miny);
+				gl.glVertex2f(minx, miny);
+			gl.glEnd();
+		}
+
+		// player mark:
 		if(tile.getClaimedBy() != null) {
 			tile.getClaimedBy().render( gl1, tile, context );
 		}
@@ -46,38 +60,18 @@ public class TileLook implements ILook <Tile>
 	}
 
 	@Override
-	public void destroy(GL gl, IRenderingContext context)
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	public void destroy(GL gl, IRenderingContext context) { }
 
 	@Override
-	public float getPriority()
-	{
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public float getPriority() { return 0; }
 
 	@Override
-	public boolean isCastsShadow()
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public boolean isCastsShadow() { return false; }
 
 	@Override
-	public IVeil getVeil()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public IVeil getVeil() { return null; }
 
 	@Override
-	public boolean isOriented()
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public boolean isOriented() { return false; }
 	
 }

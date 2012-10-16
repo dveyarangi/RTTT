@@ -2,14 +2,23 @@ package rttt;
 
 import yarangi.graphics.quadraturin.objects.Entity;
 
+/**
+ * Game board; encapsulates game logic, holds tile tree structure 
+ */
 public class Board extends Entity
 {
 	private final Tile root;
 
 	private final RTTT scene;
 	
+	/**
+	 * list of participating players
+	 */
 	private final Player [] players;
 	
+	/**
+	 * current player index
+	 */
 	private int currPlayerIdx = 0;
 
 	
@@ -25,7 +34,9 @@ public class Board extends Entity
 	public Tile getRoot() { return root; }
 	
 	
-	
+	/**
+	 * @return next player index
+	 */
 	private int getNextPlayerIdx() {
 		
 		int nextIdx = currPlayerIdx + 1;
@@ -35,6 +46,13 @@ public class Board extends Entity
 		return nextIdx;
 	}
 	
+	/**
+	 * gets next move from current player's controller;
+	 * adjusts tiles according to that move;
+	 * testing victory conditions; 
+	 * 
+	 * @return
+	 */
 	public boolean makeMove()
 	{
 		Player currPlayer = players[currPlayerIdx];
@@ -102,6 +120,11 @@ public class Board extends Entity
 		return lookupTile( nextTile, coord, depth + 1 );
 	}
 
+	/**
+	 * Splits specified tile
+	 * @param tile
+	 * @param dim
+	 */
 	public void split(Tile tile, int dim)
 	{
 		scene.removeEntity( tile );
@@ -127,6 +150,10 @@ public class Board extends Entity
 		}
 	}
 	
+	/**
+	 * Merges specified tile
+	 * @param tile
+	 */
 	public void merge(Tile tile)
 	{
 		for(int i=0; i<tile.getDim() ; ++i ) for(int j=0; j<tile.getDim() ; ++j )
@@ -140,7 +167,10 @@ public class Board extends Entity
 		scene.addEntity(tile);
 	}
 	
-	
+	/**
+	 * Tests victory conditions for specified tile
+	 * @param tile
+	 */
 	public void checkVictory( Tile tile )
 	{
 		if( tile==null )

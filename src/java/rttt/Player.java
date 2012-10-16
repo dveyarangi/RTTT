@@ -1,12 +1,23 @@
 package rttt;
 
-
+/**
+ * Incapsulates player aspects 
+ */
 public class Player
 {
+	/**
+	 * Player visual representation
+	 */
 	private final IPlayerMark mark;
 	
+	/**
+	 * Player moves controller
+	 */
 	private final IPlayerController controller;
 	
+	/**
+	 * Last tile claimed by this player
+	 */
 	private Tile lastClaimed;
 	
 	public Player(IPlayerMark mark, IPlayerController controller)  
