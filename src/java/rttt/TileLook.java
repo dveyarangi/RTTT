@@ -42,7 +42,7 @@ public class TileLook implements ILook <Tile>
 		
 		// hightlighted by mouse cursor
 		if(tile.isHighlighted()) {
-			gl.glColor3f( 0.0f, 0.5f, 0.3f );
+			gl.glColor4f( 0.0f, 0.5f, 1f, 0.2f );
 			gl.glBegin(GL2.GL_POLYGON);
 				gl.glVertex2f(minx, miny);
 				gl.glVertex2f(minx, maxy);
