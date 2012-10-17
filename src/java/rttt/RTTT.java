@@ -3,7 +3,6 @@ package rttt;
 import yarangi.graphics.quadraturin.Q;
 import yarangi.graphics.quadraturin.QVoices;
 import yarangi.graphics.quadraturin.Scene;
-import yarangi.graphics.quadraturin.Stage;
 import yarangi.graphics.quadraturin.config.EkranConfig;
 import yarangi.graphics.quadraturin.config.SceneConfig;
 import yarangi.graphics.quadraturin.objects.EntityShell;
@@ -13,9 +12,8 @@ public class RTTT extends Scene
 
 	public static void main(String ... args)
 	{
-		
-		// starts the engine:
-		Stage stage = Q.go();
+		// starting the engine:
+		Q.go();
 	}
 
 

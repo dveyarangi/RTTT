@@ -21,6 +21,11 @@ public class Board extends Entity
 	 */
 	private int currPlayerIdx = 0;
 
+	/**
+	 * Last claimed tile; if next player does not make move to the same tile it becomes owned
+	 */
+	private Tile lastClaimedTile;
+
 	
 	public Board(int size, RTTT scene, Player ...players)
 	{
@@ -61,33 +66,28 @@ public class Board extends Entity
 		if(coord == null)
 			return false;
 		
-
-//		if(player != players[currPlayerIdx])
-//			return false; // not your turn
+		Tile tile = lookupTile(coord); // getting tile object
 		
-		Tile tile = lookupTile(coord);
-		
-		if(tile.getOwner() != null) // already has piece
+		if(tile.getOwner() != null) // this tile already has piece
 			return false;
+
+		// testing previously claimed tile;
+		// making it owned if current player does not claims the same one:
+		if(lastClaimedTile != null && tile != lastClaimedTile)
+		{
+			lastClaimedTile.setOwned();
+			checkVictory( lastClaimedTile.getParent() );
+			lastClaimedTile = null;
+		}
 		
-		currPlayer = players[currPlayerIdx];
-		
-		
+		// splitting if current player claims the same tile:
 		if(tile.getClaimedBy() == null) 
 		{
 			tile.setClaimedBy( currPlayer.getMark() );
-			currPlayer.claim(tile);
+			lastClaimedTile = tile;
 		}
 		else 
 			split( tile,  3 );
-		
-		Player nextPlayer = players[getNextPlayerIdx()];
-		if(nextPlayer.getClaimed() != null && nextPlayer.getClaimed() != tile)
-		{
-			nextPlayer.getClaimed().setOwned();
-			checkVictory( nextPlayer.getClaimed().getParent() );
-		}
-
 		
 		currPlayerIdx = getNextPlayerIdx();
 		
