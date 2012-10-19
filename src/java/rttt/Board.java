@@ -1,5 +1,8 @@
 package rttt;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import yarangi.graphics.quadraturin.objects.Entity;
 
 /**
@@ -14,7 +17,7 @@ public class Board extends Entity
 	/**
 	 * list of participating players
 	 */
-	private final Player [] players;
+	private final List <Player> players = new ArrayList <> ();
 	
 	/**
 	 * current player index
@@ -25,15 +28,28 @@ public class Board extends Entity
 	 * Last claimed tile; if next player does not make move to the same tile it becomes owned
 	 */
 	private Tile lastClaimedTile;
+	
+	/** 
+	 * Moves history 
+	 */
+	private final List <TileCoord> movesList = new ArrayList <> ();
 
 	
-	public Board(int size, RTTT scene, Player ...players)
+	public Board(int size, RTTT scene)
 	{
 		root = new Tile(new TileCoord(), -size/2, -size/2, size/2, size/2, null);
 		this.scene = scene;
 		scene.addEntity( root );
 		
-		this.players = players;
+	}
+	
+	/**
+	 * Adds a player to the board
+	 * @param player
+	 */
+	public void addPlayer(Player player) { 
+				
+		players.add( player ); 
 	}
 	
 	public Tile getRoot() { return root; }
@@ -45,11 +61,13 @@ public class Board extends Entity
 	private int getNextPlayerIdx() {
 		
 		int nextIdx = currPlayerIdx + 1;
-		if(nextIdx == players.length)
+		if(nextIdx == players.size())
 			nextIdx = 0;
 		
 		return nextIdx;
 	}
+	
+	public List <TileCoord> getMovesList() { return movesList; }
 	
 	/**
 	 * gets next move from current player's controller;
@@ -60,9 +78,12 @@ public class Board extends Entity
 	 */
 	public boolean makeMove()
 	{
-		Player currPlayer = players[currPlayerIdx];
+		if(players.size() == 0)
+			return false;
 		
-		TileCoord coord = currPlayer.getController().getMove();
+		Player currPlayer = players.get(currPlayerIdx);
+		
+		TileCoord coord = currPlayer.getController().makeMove( this );
 		if(coord == null)
 			return false;
 		
@@ -71,6 +92,12 @@ public class Board extends Entity
 		if(tile.getOwner() != null) // this tile already has piece
 			return false;
 
+		movesList.add( coord );
+		
+		for(Player player : players)
+			if(player != currPlayer)
+				player.getController().enemyMoved( this, coord );
+		
 		// testing previously claimed tile;
 		// making it owned if current player does not claims the same one:
 		if(lastClaimedTile != null && tile != lastClaimedTile)
@@ -93,7 +120,29 @@ public class Board extends Entity
 		
 		return true;
 	}
-	
+
+	/**
+	 * Validate controller's move
+	 * @param controller
+	 * @param move
+	 * @return
+	 */
+	public boolean validMove(IPlayerController controller, TileCoord move)
+	{
+		if(players.size() == 0)
+			return false;
+		
+		if(move == null || controller != players.get(currPlayerIdx).getController())
+			return false;
+		
+		Tile tile = lookupTile(move); // getting tile object
+		
+		if(tile.getOwner() != null) // this tile already has piece
+			return false;
+		
+		return true;
+	}
+		
 	/**
 	 * Finds a tile by tile coordinate vector
 	 * @param coord

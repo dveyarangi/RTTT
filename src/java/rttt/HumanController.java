@@ -48,7 +48,7 @@ public class HumanController extends ActionController implements IPlayerControll
 	};
 
 	
-	public HumanController(final Scene scene)
+	public HumanController(final Scene scene, final Board board)
 	{
 		super(scene);
 
@@ -93,6 +93,8 @@ public class HumanController extends ActionController implements IPlayerControll
 				Tile tile = (Tile) object;
 				
 				move = tile.getCoord();
+				if(!board.validMove(HumanController.this, move))
+					move = null;
 			}
 			
 		});
@@ -100,7 +102,7 @@ public class HumanController extends ActionController implements IPlayerControll
 	}
 	
 	@Override
-	public TileCoord getMove() {
+	public TileCoord makeMove(Board board) {
 		TileCoord tempMove = move;
 		move = null;
 		return tempMove;
@@ -139,5 +141,15 @@ public class HumanController extends ActionController implements IPlayerControll
 
 	@Override
 	public PickingSensor.Mode getPickingMode() { return PickingSensor.Mode.FITTING; }
+
+
+	@Override
+	public void enemyMoved(Board board, TileCoord coord)
+	{
+		// TODO  Move camera to enemy move
+		
+	}
+
+
 
 }
