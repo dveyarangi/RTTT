@@ -5,28 +5,7 @@
 		"aa"   : false,
 		"maxFPS" : 1000,
 		"plugins" : [
-			{ "factoryClass" : "yarangi.graphics.shaders.ShaderFactory",
-			  "properties" : {
-			  		"light" : "shaders/light1.glsl",
-			  		"penumbra" : "shaders/penumbra.glsl",
-					"vblur" : "shaders/gaussian-vblur.glsl",
- 			 		"hblur" : "shaders/gaussian-hblur.glsl",
- 					"fade" : "shaders/fade.glsl",
- 					"isoheight" : "shaders/isoheight.glsl"
-			  	}
-			},
-			{ 
-				"factoryClass" : "yarangi.graphics.veils.BlurVeil",
-				"properties" : {
-					"decay" : 0.03
-				}
-			},	
-			{ 
-				"factoryClass" : "yarangi.graphics.veils.IsoheightVeil",
-				"properties" : {
-					"decay" : 0.001
-				}
-			}				
+			
 		 ]
 			  		
 	},
